@@ -1,0 +1,10 @@
+type Query {
+    arenas: [Arena]
+}
+
+type Arena @key(fields: "id") {
+    id: ID!
+    name: String!
+    description: String
+    complexity: Int!
+}

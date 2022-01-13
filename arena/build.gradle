@@ -31,6 +31,7 @@ dependencies {
     implementation 'jakarta.annotation:jakarta.annotation-api'
 
     implementation 'io.micronaut.graphql:micronaut-graphql:3.0.0'
+    implementation 'com.apollographql.federation:federation-graphql-java-support:0.7.0'
     implementation 'ch.qos.logback:logback-classic:1.2.10'
 }
 

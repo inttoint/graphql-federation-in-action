@@ -1,0 +1,10 @@
+type Query {
+    players: [Player]
+}
+
+type Player @key(fields: "id") {
+    id: ID!
+    nickname: String!
+    level: Int!
+    active: Boolean!
+}

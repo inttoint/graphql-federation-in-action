@@ -1,0 +1,19 @@
+type Query {
+    games: [Game]
+}
+
+type Game {
+    id: ID!
+    numOfPlayers: Int!
+    status: String!
+    players: [Player]
+    arena: Arena!
+}
+
+type Player @key(fields: "id") @extends {
+    id: ID! @external
+}
+
+type Arena @key(fields: "id") @extends {
+    id: ID! @external
+}
