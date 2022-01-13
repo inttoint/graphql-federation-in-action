@@ -1,0 +1,4 @@
+rootProject.name="graphql-federation-in-action"
+include 'arena'
+include 'game'
+include 'player'

@@ -1,0 +1,5 @@
+micronaut:
+  application:
+    name: player
+  server:
+    port: 8082

@@ -1,0 +1,3 @@
+task build {
+    dependsOn ':arena:build', ':game:build', ':player:build'
+}
