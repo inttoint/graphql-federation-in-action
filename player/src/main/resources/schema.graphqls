@@ -1,8 +1,9 @@
 type Query {
     players: [Player]
+    playerById(id: ID!) : Player
 }
 
-type Player @key(fields: "id") {
+type Player {
     id: ID!
     nickname: String!
     level: Int!

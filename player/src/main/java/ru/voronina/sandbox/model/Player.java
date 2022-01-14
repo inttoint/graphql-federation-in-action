@@ -1,12 +1,10 @@
 package ru.voronina.sandbox.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
-import java.util.UUID;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -15,8 +13,21 @@ import java.util.UUID;
 @Accessors(chain = true)
 public class Player {
 
-    private UUID id;
+    @NotNull
+    private Long id;
+
+    @NotBlank
     private String nickname;
+
+    @NotNull
     private Integer level;
+
+    @NotNull
     private Boolean active = true;
+
+    public Player(Long id, String nickname, Integer level) {
+        this.id = id;
+        this.nickname = nickname;
+        this.level = level;
+    }
 }
