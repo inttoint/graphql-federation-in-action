@@ -23,7 +23,7 @@ public class ArenaByIdDataFetcher implements DataFetcher<CompletableFuture<Arena
 
     @Override
     public CompletableFuture<Arena> get(DataFetchingEnvironment environment) throws Exception {
-        String id = environment.getArgument("id");
+        final String id = environment.getArgument("id");
         log.info("[GraphQL] Get arena by id={}", id);
 
         return arenaService.findById(Long.parseLong(id));

@@ -23,7 +23,7 @@ public class PlayerByIdDataFetcher implements DataFetcher<CompletableFuture<Play
 
     @Override
     public CompletableFuture<Player> get(DataFetchingEnvironment environment) throws Exception {
-        String id = environment.getArgument("id");
+        final String id = environment.getArgument("id");
         log.info("[GraphQL] Get player by id={}", id);
 
         return playerService.findById(Long.parseLong(id));
