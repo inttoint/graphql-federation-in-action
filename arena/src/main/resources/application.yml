@@ -3,3 +3,8 @@ micronaut:
     name: arena
   server:
     port: 8080
+
+graphql:
+  enabled: true
+  graphiql:
+    enabled: true

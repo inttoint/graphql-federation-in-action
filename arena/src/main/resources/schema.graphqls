@@ -1,8 +1,9 @@
 type Query {
     arenas: [Arena]
+    arenaById(id: ID!): Arena
 }
 
-type Arena @key(fields: "id") {
+type Arena {
     id: ID!
     name: String!
     description: String
