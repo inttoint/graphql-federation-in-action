@@ -19,8 +19,8 @@ public class PlayerRepository {
             new Player(2L, "second", 5),
             new Player(3L, "third", 8));
 
-    public CompletableFuture<Player> findById(int id) {
-        log.info("[PlayerRepository] Find player by id={}", id);
+    public CompletableFuture<Player> findById(long id) {
+        log.info("[Repository] Find player by id={}", id);
         return CompletableFuture.supplyAsync(
                 () -> players.stream()
                         .filter(p -> p.getId() == id)
@@ -30,7 +30,7 @@ public class PlayerRepository {
     }
 
     public CompletableFuture<List<Player>> findAll() {
-        log.info("[PlayerRepository] Find all players");
+        log.info("[Repository] Find all players");
         return CompletableFuture.supplyAsync(
                 () -> players.stream()
                         .filter(Player::getActive)

@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import ru.voronina.sandbox.model.Player;
-import ru.voronina.sandbox.repository.PlayerRepository;
+import ru.voronina.sandbox.service.PlayerService;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -14,11 +14,11 @@ import java.util.concurrent.CompletableFuture;
 @Singleton
 public class PlayerByIdDataFetcher implements DataFetcher<CompletableFuture<Player>> {
 
-    private final PlayerRepository playerRepository;
+    private final PlayerService playerService;
 
     @Inject
-    public PlayerByIdDataFetcher(PlayerRepository playerRepository) {
-        this.playerRepository = playerRepository;
+    public PlayerByIdDataFetcher(PlayerService playerService) {
+        this.playerService = playerService;
     }
 
     @Override
@@ -26,6 +26,6 @@ public class PlayerByIdDataFetcher implements DataFetcher<CompletableFuture<Play
         String id = environment.getArgument("id");
         log.info("[GraphQL] Get player by id={}", id);
 
-        return playerRepository.findById(Integer.parseInt(id));
+        return playerService.findById(Long.parseLong(id));
     }
 }
