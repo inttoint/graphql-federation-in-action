@@ -1,17 +1,18 @@
 package ru.voronina.sandbox.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 public class Arena {
 
+    @NotNull
     private Long id;
 }

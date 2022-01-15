@@ -3,3 +3,8 @@ micronaut:
     name: game
   server:
     port: 8081
+
+graphql:
+  enabled: true
+  graphiql:
+    enabled: true
