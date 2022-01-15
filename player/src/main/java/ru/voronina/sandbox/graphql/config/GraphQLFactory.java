@@ -1,4 +1,4 @@
-package ru.voronina.sandbox.graphql;
+package ru.voronina.sandbox.graphql.config;
 
 import com.apollographql.federation.graphqljava.tracing.FederatedTracingInstrumentation;
 import graphql.GraphQL;
