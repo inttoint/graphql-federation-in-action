@@ -1,5 +1,6 @@
 package ru.voronina.sandbox.graphql.config;
 
+import com.apollographql.federation.graphqljava.Federation;
 import com.apollographql.federation.graphqljava.tracing.FederatedTracingInstrumentation;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -13,6 +14,8 @@ import io.micronaut.core.io.ResourceResolver;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import ru.voronina.sandbox.graphql.config.fetcher.FederationFetcher;
+import ru.voronina.sandbox.graphql.config.fetcher.resolver.FederationTypeResolver;
 import ru.voronina.sandbox.graphql.fetcher.PlayerByIdDataFetcher;
 import ru.voronina.sandbox.graphql.fetcher.PlayersDataFetcher;
 
@@ -37,12 +40,15 @@ public class GraphQLFactory {
 
     @Bean
     @Singleton
-    public GraphQL graphQL(ResourceResolver resourceResolver) {
+    public GraphQL graphQL(ResourceResolver resourceResolver, FederationTypeResolver typeResolver, FederationFetcher fetcher) {
         InputStream schemaInputStream = resourceResolver.getResourceAsStream(PATH_SCHEMA).orElseThrow();
         TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry().merge(
                 new SchemaParser().parse(new BufferedReader(new InputStreamReader(schemaInputStream))));
 
-        GraphQLSchema graphQLSchema = new SchemaGenerator().makeExecutableSchema(typeRegistry, buildRuntimeWiring());
+        GraphQLSchema graphQLSchema = Federation.transform(typeRegistry, buildRuntimeWiring())
+                .resolveEntityType(typeResolver)
+                .fetchEntities(fetcher)
+                .build();
 
         return GraphQL.newGraphQL(graphQLSchema)
                 .instrumentation(new FederatedTracingInstrumentation())

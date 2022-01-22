@@ -3,7 +3,7 @@ type Query {
     playerById(id: ID!) : Player
 }
 
-type Player {
+type Player @key(fields: "id"){
     id: ID!
     nickname: String!
     level: Int!
