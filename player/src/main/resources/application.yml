@@ -2,7 +2,7 @@ micronaut:
   application:
     name: player
   server:
-    port: 8082
+    port: 8080
 
 graphql:
   enabled: true
