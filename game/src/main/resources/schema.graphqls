@@ -1,6 +1,6 @@
 type Query {
     games: [Game]
-    gameById(id: ID!): Game
+    gamesByPlayer(playerId: ID!): [Game]
 }
 
 type Game {
@@ -11,8 +11,8 @@ type Game {
     arena: Arena!
 }
 
-type Player {
-    id: ID!
+type Player @key(fields: "id") @extends {
+    id: ID! @external
 }
 
 type Arena {

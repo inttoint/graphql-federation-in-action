@@ -1,5 +1,6 @@
 package ru.voronina.sandbox.graphql.fetcher;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import graphql.schema.DataFetcher;
@@ -12,20 +13,20 @@ import ru.voronina.sandbox.service.GameService;
 
 @Slf4j
 @Singleton
-public class GameByIdDataFetcher implements DataFetcher<CompletableFuture<Game>> {
+public class GamesByPlayerDataFetcher implements DataFetcher<CompletableFuture<List<Game>>> {
 
     private final GameService gameService;
 
     @Inject
-    public GameByIdDataFetcher(GameService gameService) {
+    public GamesByPlayerDataFetcher(GameService gameService) {
         this.gameService = gameService;
     }
 
     @Override
-    public CompletableFuture<Game> get(DataFetchingEnvironment environment) throws Exception {
-        final String id = environment.getArgument("id");
-        log.info("[GraphQL] Get game by id={}", id);
+    public CompletableFuture<List<Game>> get(DataFetchingEnvironment environment) {
+        final String playerId = environment.getArgument("playerId");
+        log.info("[GraphQL] Get games for player {}", playerId);
 
-        return gameService.findById(Long.parseLong(id));
+        return gameService.findByPlayer(Long.parseLong(playerId));
     }
 }

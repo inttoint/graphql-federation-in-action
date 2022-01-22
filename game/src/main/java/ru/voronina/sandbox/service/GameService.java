@@ -7,6 +7,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import ru.voronina.sandbox.model.Game;
+import ru.voronina.sandbox.model.Player;
 import ru.voronina.sandbox.repository.GameRepository;
 
 @Slf4j
@@ -25,9 +26,9 @@ public class GameService {
         return gameRepository.findById(id);
     }
 
-    public CompletableFuture<List<Game>> findByArena(Long arenaId) {
-        log.info("[Service] Find games by arenaId");
-        return gameRepository.findBy(g -> g.getArena() != null && g.getArena().getId().equals(arenaId));
+    public CompletableFuture<List<Game>> findByPlayer(Long playerId) {
+        log.info("[Service] Find games for player {}", playerId);
+        return gameRepository.findBy(g -> g.getPlayers().stream().map(Player::getId).anyMatch(id -> id.equals(playerId)));
     }
 
     public CompletableFuture<List<Game>> findAll() {

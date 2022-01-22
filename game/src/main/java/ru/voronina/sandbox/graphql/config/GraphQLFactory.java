@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.apollographql.federation.graphqljava.Federation;
 import com.apollographql.federation.graphqljava.tracing.FederatedTracingInstrumentation;
 
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
-import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import io.micronaut.context.annotation.Bean;
@@ -18,7 +18,7 @@ import io.micronaut.core.io.ResourceResolver;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import ru.voronina.sandbox.graphql.fetcher.GameByIdDataFetcher;
+import ru.voronina.sandbox.graphql.fetcher.GamesByPlayerDataFetcher;
 import ru.voronina.sandbox.graphql.fetcher.GamesDataFetcher;
 
 @Slf4j
@@ -28,12 +28,12 @@ public class GraphQLFactory {
     public static final String PATH_SCHEMA = "classpath:schema.graphqls";
 
     private final GamesDataFetcher gamesDataFetcher;
-    private final GameByIdDataFetcher gameByIdDataFetcher;
+    private final GamesByPlayerDataFetcher gamesByPlayerDataFetcher;
 
     @Inject
-    public GraphQLFactory(GamesDataFetcher gamesDataFetcher, GameByIdDataFetcher gameByIdDataFetcher) {
+    public GraphQLFactory(GamesDataFetcher gamesDataFetcher, GamesByPlayerDataFetcher gamesByPlayerDataFetcher) {
         this.gamesDataFetcher = gamesDataFetcher;
-        this.gameByIdDataFetcher = gameByIdDataFetcher;
+        this.gamesByPlayerDataFetcher = gamesByPlayerDataFetcher;
     }
 
     @Bean
@@ -42,9 +42,12 @@ public class GraphQLFactory {
         InputStream schemaInputStream = resourceResolver.getResourceAsStream(PATH_SCHEMA).orElseThrow();
         TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry().merge(
                 new SchemaParser().parse(new BufferedReader(new InputStreamReader(schemaInputStream))));
+        RuntimeWiring runtimeWiring = buildRuntimeWiring();
 
-        GraphQLSchema graphQLSchema = new SchemaGenerator().makeExecutableSchema(typeRegistry, buildRuntimeWiring());
-
+        GraphQLSchema graphQLSchema = Federation.transform(typeRegistry, runtimeWiring)
+                .resolveEntityType(env -> null)
+                .fetchEntities(env -> null)
+                .build();
         return GraphQL.newGraphQL(graphQLSchema)
                 .instrumentation(new FederatedTracingInstrumentation())
                 .build();
@@ -54,7 +57,7 @@ public class GraphQLFactory {
         return RuntimeWiring.newRuntimeWiring()
                 .type("Query", builder -> builder
                         .dataFetcher("games", gamesDataFetcher)
-                        .dataFetcher("gameById", gameByIdDataFetcher))
+                        .dataFetcher("gamesByPlayer", gamesByPlayerDataFetcher))
                 .build();
     }
 }
