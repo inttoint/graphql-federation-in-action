@@ -25,11 +25,6 @@ public class ArenaService {
         return arenaRepository.findById(id);
     }
 
-    public CompletableFuture<List<Arena>> findByComplexity(int complexity) {
-        log.info("[Service] Find arenas by complexity");
-        return arenaRepository.findBy(a -> a.getComplexity().equals(complexity));
-    }
-
     public CompletableFuture<List<Arena>> findAll() {
         log.info("[Service] Find all arenas");
         return arenaRepository.findAll();

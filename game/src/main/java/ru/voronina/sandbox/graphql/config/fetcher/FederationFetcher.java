@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 import com.apollographql.federation.graphqljava._Entity;
 
@@ -45,9 +44,8 @@ public class FederationFetcher implements DataFetcher<CompletableFuture<List<Obj
 
                     if (Arena.class.getSimpleName().equals(argument.get(TypeNameMetaFieldDef.getName()))) {
                         final String idAsString = (String) argument.get("id");
-                        // Check the number of returned records and their order
-
                         long id = Long.parseLong(idAsString);
+                        // Check the number of returned records and their order
                         return gameService.findByArenaId(id).thenApply(games -> new Arena(id, games));
                     }
 
