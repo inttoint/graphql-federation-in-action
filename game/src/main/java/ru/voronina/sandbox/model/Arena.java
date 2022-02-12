@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,4 +16,6 @@ public class Arena {
 
     @NotNull
     private Long id;
+
+    private List<Game> games;
 }

@@ -21,9 +21,9 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public CompletableFuture<Game> findById(long id) {
-        log.info("[Service] Find game by id={}", id);
-        return gameRepository.findById(id);
+    public CompletableFuture<List<Game>> findByArenaId(long arenaId) {
+        log.info("[Service] Find game by arenaId={}", arenaId);
+        return gameRepository.findBy(g -> g.getArenaId() == arenaId);
     }
 
     public CompletableFuture<List<Game>> findByPlayer(Long playerId) {

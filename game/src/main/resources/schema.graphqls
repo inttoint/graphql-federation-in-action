@@ -8,13 +8,14 @@ type Game {
     numOfPlayers: Int!
     status: String!
     players: [Player]!
-    arena: Arena!
+    arenaId: ID
 }
 
 type Player @key(fields: "id") @extends {
     id: ID! @external
 }
 
-type Arena {
-    id: ID!
+type Arena @key(fields: "id") @extends {
+    id: ID! @external
+    games: [Game!]
 }

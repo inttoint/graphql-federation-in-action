@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.apollographql.federation.graphqljava.Federation;
 import com.apollographql.federation.graphqljava.tracing.FederatedTracingInstrumentation;
 
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
-import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import io.micronaut.context.annotation.Bean;
@@ -43,7 +43,10 @@ public class GraphQLFactory {
         TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry().merge(
                 new SchemaParser().parse(new BufferedReader(new InputStreamReader(schemaInputStream))));
 
-        GraphQLSchema graphQLSchema = new SchemaGenerator().makeExecutableSchema(typeRegistry, buildRuntimeWiring());
+        GraphQLSchema graphQLSchema = Federation.transform(typeRegistry, buildRuntimeWiring())
+                .resolveEntityType(env -> null)
+                .fetchEntities(env -> null)
+                .build();
 
         return GraphQL.newGraphQL(graphQLSchema)
                 .instrumentation(new FederatedTracingInstrumentation())

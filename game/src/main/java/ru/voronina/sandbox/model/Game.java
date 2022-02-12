@@ -24,7 +24,7 @@ public class Game {
     private String status;
 
     @NotNull
-    private Arena arena;
+    private Long arenaId;
 
     @NotNull
     private List<Player> players;
